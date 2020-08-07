@@ -1,0 +1,84 @@
+﻿@model Groupement_Citoyen.Models.Commande
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details de votre commande</h1>
+@if (!Model.Valider && Model.Total > 0)
+{
+    <form asp-action="ValiderCommande" asp-controller="Commandes" asp-route-idUtilisateur="@this.User.Identity">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <input type="submit" value="Valider votre commande" class="btn btn-light" />
+        </div>
+    </form>
+}
+<div>
+    <h4>Commande</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateAchat)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateAchat)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DetailsCommandes.Last().Produit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DetailsCommandes.Last().PrixUnitaire)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DetailsCommandes.Last().Quantite)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DetailsCommandes.Last().Produit.Producteur)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (DetailsCommande dc in Model.DetailsCommandes)
+            {
+                <tr>
+                    <td>
+                        @dc.Produit.Nom
+                    </td>
+                    <td>
+                        @dc.PrixUnitaire
+                    </td>
+                    <td>
+                        @dc.Quantite
+                    </td>
+                    <td>
+                        @dc.Produit.Producteur.NomComplet
+                    </td>
+                    @if (!Model.Valider)
+                    {
+                        <td>
+                            <a asp-controller="DetailsCommandes" asp-action="Edit" asp-route-id="@dc.Id">Edit</a> |
+                            <a asp-controller="DetailsCommandes" asp-action="Delete" asp-route-id="@dc.Id">Delete</a>
+                        </td>
+                    }
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Index">Vos commandes</a>
+</div>

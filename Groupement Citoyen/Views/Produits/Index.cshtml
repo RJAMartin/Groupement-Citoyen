@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Groupement_Citoyen.Models.Produit>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (this.User.IsInRole("Producteur"))
+    {
+        <a asp-action="Create">Create New</a>
+    }
+    </p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prix)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            @if (this.User.IsInRole("Producteur"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Visible)
+                </th>
+            }
+                <th>
+                    @Html.DisplayNameFor(model => model.Producteur)
+                </th>
+                <th></th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            @if (this.User.IsInRole("Producteur"))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Visible)
+                </td>
+            }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producteur.NomComplet)
+                </td>
+                <td>
+                    @if (this.User.IsInRole("Producteur"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    @if (this.User.IsInRole("Utilisateur") && item.Quantite > 0)
+                    {
+                        <form asp-action="AjouterProduit" asp-controller="Commandes" asp-route-idUtilisateur="@ViewBag.userId" asp-route-idProduit="@item.Id">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Quantité</span>
+                                    </div>
+                                    <input type="number" name="quantite" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                </div>
+                                <input type="submit" value="Ajouter au panier" class="btn btn-outline-primary" />
+                            </div>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

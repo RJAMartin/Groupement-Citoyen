@@ -1,0 +1,42 @@
+﻿@model Groupement_Citoyen.Models.Utilisateur
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<table>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.MontantPortefeuille) :
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.MontantPortefeuille)
+
+        </td>
+    </tr>
+
+</table>
+
+<form asp-action="AjouterMontant" asp-controller="Utilisateurs">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="@Model.Id" />
+    <table>
+        <tr>
+            <td>
+                <label class="control-label">Ajouter un montant :</label>
+            </td>
+            <td>
+                <div class="form-group">
+                    <input name="montant" class="form-control input-sm" />
+                    <span asp-validation-for="@Model.MontantPortefeuille" class="text-danger"></span>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary " />
+                </div>
+            </td>
+        </tr>
+
+    </table>
+    
+</form>

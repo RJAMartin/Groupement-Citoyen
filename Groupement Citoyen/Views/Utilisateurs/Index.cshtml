@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Groupement_Citoyen.ViewModel.UserRoleVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (this.User.IsInRole("Responsable"))
+    {
+        <a asp-action="Create">Create</a>
+    }
+    </p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.utilisateur.NomComplet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.utilisateur.Adresse)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.utilisateur.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.utilisateur.Adresse)
+            </td>
+            <td>
+                @if (this.User.IsInRole("Responsable"))
+                {
+                    <a asp-action="Delete" asp-route-id="@item.utilisateur.Id">Delete</a>
+                }
+                @if (this.User.IsInRole("Utilisateur"))
+                {
+                    <a asp-action="Index" asp-controller="Produits" asp-route-idUtilisateur="@item.utilisateur.Id">Ses produits</a>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
